@@ -1,0 +1,208 @@
+var dataHussar = function (element, dataset, settings = {})										
+{
+	var dh = this;
+	dh.elem = document.getElementById(element);
+	dh.data = dataset;
+	dh.set = {
+		"start" : settings.start != null ? settings.start : true, 	
+		"width" : settings.width != null ? settings.width : 1100, 
+		"height" : settings.height != null ? settings.height : 400,
+		"delay" : settings.delay != null ? settings.delay : 1,
+		"stroke" : settings.stroke != null ? settings.stroke : 2,
+		"colour" : settings.colour != null ? settings.colour : "dodgerblue",
+		"dotColour" : settings.dotColour != null ? settings.dotColour : "dodgerblue",
+		"valueFont" : settings.valueFont != null ? settings.valueFont : "initial",
+		"valueSize" : settings.valueSize != null ? settings.valueSize : "initial",
+		"valueColour" : settings.valueColour != null ? settings.valueColour : "red",
+		"valueOffsetX" : settings.valueOffsetX != null ? settings.valueOffsetX : 15,
+		"valueOffsetY" : settings.valueOffsetY != null ? settings.valueOffsetY : 10,			
+		"lineColour" : settings.lineColour != null ? settings.lineColour : "silver",
+		"xStep" : settings.xStep != null ? settings.xStep : 12,
+		"yStep" : settings.yStep != null ? settings.yStep : 6,
+		"labelXFont" : settings.labelXFont != null ? settings.labelXFont : "initial",
+		"labelYFont" : settings.labelYFont != null ? settings.labelYFont : "initial",
+		"labelXSize" : settings.labelXSize != null ? settings.labelXSize : "initial",
+		"labelYSize" : settings.labelYSize != null ? settings.labelYSize : "initial",
+		"labelXOffset" : settings.labelXOffset != null ? settings.labelXOffset : -15,
+		"labelYOffset" : settings.labelYOffset != null ? settings.labelYOffset : 10,
+		"labelXColour" : settings.labelXColour != null ? settings.labelXColour : "black",
+		"labelYColour" : settings.labelYColour != null ? settings.labelYColour : "black"
+	};
+	dh.init = function() {
+		document.getElementsByTagName("head")[0].innerHTML += "<style> @-webkit-keyframes " + dh.elem.id + "-dash { to { stroke-dashoffset: 0; } } @keyframes " + dh.elem.id + "-dash { to { stroke-dashoffset: 0; } </style>";
+		document.getElementById(element).setAttribute("width", dh.set.width);
+		document.getElementById(element).setAttribute("height", dh.set.height);
+		if (dh.set.start) {
+			dh.draw();
+		}
+	};
+	dh.max = function() {
+		var mx = dh.data[0].Value;
+		for (var i = 1; i < dh.data.length; i++) {     
+			if (dh.data[i].Value > mx) {
+				mx = dh.data[i].Value;
+			}
+		}
+		return mx;
+	};
+	dh.draw = function () {		
+		var output = "";
+        var bob = dh.set.yStep;
+		var maxValue = Math.max.apply(Math,dh.data.map(function(o){return o.Value;})); // dh.max();
+		var step = dh.set.width / dh.data.length;
+		var dv = Math.ceil(dh.data.length / dh.set.xStep);
+		var divider = dh.data.length > dh.set.xStep ? dv : 1;
+		var pointIndex = 0;
+        for (var tom = 0; tom <= bob; tom++) {
+			let y1 = (dh.set.height - parseInt((maxValue / bob) * tom) * (dh.set.height/ maxValue));
+			let x2 = dh.set.width;
+			let y2 = (dh.set.height - parseInt((maxValue / bob) * tom) * (dh.set.height / maxValue));
+					   output += '<line x1="0" y1="'
+							  + y1 
+							  +'" x2="'
+							  + x2 
+							  + '" y2="'
+							  + y2 
+							  + '" style="stroke:'
+							  + dh.set.lineColour 
+							  + ';stroke-width:'
+							  + dh.set.stroke 
+							  + '" /><text x="0" y="'
+							  + (dh.set.height - (parseInt((maxValue / bob) * tom) - dh.set.labelYOffset) * (dh.set.height / maxValue)) 
+							  + '" fill="'
+							  + dh.set.labelYColour 
+							  + '" font-family="' 
+							  + dh.set.labelYFont 
+							  + '" font-size="' 
+							  + dh.set.labelYSize 
+							  + '">'
+							  + parseInt((maxValue / bob) * tom) 
+							  +'</text>';
+        } 
+		for (var ib = 0; ib < dh.data.length -1; ib++) {
+			let x1 = (ib * step);
+			let y1 = (dh.set.height - dh.data[ib].Value * (dh.set.height / maxValue));
+			let x2 = ((ib + 1 ) * step);
+			let y2 = (dh.set.height - dh.data[ib + 1].Value * (dh.set.height / maxValue));
+					   output += '<path class="' 
+							  + this.elem.id 
+							  + '_graphLine" d="M ' 
+							  + x1 
+							  + ' ' 
+							  + y1 
+							  + ' l ' 
+							  + (x2 - x1) 
+							  + ' ' 
+							  + (y2 - y1) 
+							  + '" stroke="' 
+							  + dh.set.colour
+							  +'" stroke-width="' 
+							  + dh.set.stroke 
+							  + '" fill="none" />'
+			if (ib % divider == 0) {
+						   output += '<text x="'
+								  + ib * step
+								  +'" y="'
+								  + (dh.set.height 
+								  + dh.set.labelXOffset)
+								  +'" fill="'
+								  + dh.set.labelXColour 
+								  +'" font-family="' 
+								  + dh.set.labelXFont 
+								  + '" font-size="' 
+								  + dh.set.labelXSize 
+								  + '">'
+								  + dh.data[ib].Label 
+								  +'</text>';
+						   output += '<circle style="transition: 0.5s; cursor: pointer; opacity: 0;" ' 
+								  + 'data-'
+								  + dh.elem.id.toLowerCase() 
+								  + '-index="' 
+								  + pointIndex 
+								  + '" class="' 
+								  + dh.elem.id 
+								  + '_Point" cx="' 
+								  + ib * step 
+								  + '" cy="' 
+								  + (dh.set.height - dh.data[ib].Value * (dh.set.height / maxValue)) 
+								  + '" r="5" stroke="' 
+								  + dh.set.dotColour 
+								  + '" stroke-width="1" fill="white" />';
+						   output += '<text style="opacity:0;transition: 0.5s;z-index:1;" x="'
+								  + (ib * step + dh.set.valueOffsetX)
+								  +'" y="'
+								  + (dh.set.height - dh.data[ib].Value * (dh.set.height / maxValue) - dh.set.valueOffsetY)
+								  +'" fill="'
+								  + dh.set.valueColour  
+								  +'" class="' 
+								  + dh.elem.id 
+								  + '_Text" font-family="' 
+								  + dh.set.valueFont 
+								  + '" font-size="' 
+								  + dh.set.valueSize 
+								  + '">'
+								  + dh.data[ib].Value 
+								  +'</text>';
+				pointIndex++;
+			}
+			
+			if (dh.set.start) {
+				dh.elem.innerHTML = output;
+			}		
+
+		}
+		
+		if (dh.set.start) {
+			dh.anit();
+		}
+		
+		return output;
+	};
+	dh.anit = function () {
+		var points = document.getElementsByClassName(this.elem.id + "_Point");
+		var texts = document.getElementsByClassName(this.elem.id + "_Text");
+		var at = "data-" + dh.elem.id.toLowerCase() + "-index";
+		for (var y = 0; y < points.length; y++) {
+			points[y].addEventListener("mouseover", function(event) {
+				var index = this.getAttribute(at);
+				this.style.strokeWidth = 10;
+				texts[index].style.opacity = 1;
+			});
+			points[y].addEventListener("mouseout", function(event) {
+				var index = this.getAttribute(at);
+				this.style.strokeWidth = 1;
+				texts[index].style.opacity = 0;
+			});
+		}	
+		dh.anim(this.elem.id + "_graphLine", (dh.set.delay / dh.data.length)); 
+		dh.boun(this.elem.id + "_Point", (dh.set.delay / points.length));
+	};
+	dh.anim = function (cl, dl) {
+		for (var i = 0; i < document.getElementsByClassName(cl).length;i++) {
+			var thisPath = document.getElementsByClassName(cl)[i];
+			var l = thisPath.getTotalLength();
+			thisPath.style.strokeDasharray = l;
+			thisPath.style.strokeDashoffset = l;
+			thisPath.style.opacity = 1;
+			thisPath.style.animation = this.elem.id + "-dash " + dl + "s linear forwards";
+			thisPath.style.webkitAnimation = this.elem.id + "-dash " + dl + "s linear forwards";
+			thisPath.style.animationDelay = (i * dl) + "s";
+			thisPath.style.webkitAnimationDelay = (i * dl) + "s";
+		}
+	};
+	dh.boun = function (cl, dl) {
+		var elm = document.getElementsByClassName(cl).length;
+		var count = 0;
+		var delay = dl * 1000;
+		var mrBouncy = setInterval(function() {
+			if (count == elm) {
+				clearInterval(mrBouncy);
+			}
+			else {
+				document.getElementsByClassName(cl)[count].style.opacity = 1;
+				count++;	
+			}
+		}, delay);
+	};
+	dh.init();
+};
