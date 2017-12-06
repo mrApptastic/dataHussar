@@ -45,6 +45,34 @@ var dataHussar = function (element, dataset, settings = {})
 		}
 		return mx;
 	};
+	dh.slp = function (data) {
+		var summation = 0;
+		var sumX = 0;
+		var sumY = 0;
+		var squaredX = 0;
+		for (let i = 0; i < data.length; i++) {
+			summation += ((i + 1) * data[i].Value)
+			sumX += (i + 1);
+			sumY += data[i].Value;
+			squaredX += ((i + 1) * (i + 1));			
+		}
+		var a = (data.length) * summation;
+		var b = sumX * sumY;
+		var c = (data.length) * squaredX;
+		var d = sumX * sumX;		
+		return ((a - b) / (c -d));
+	};
+	dh.yin = function (data, slope) {
+		var sumX = 0;
+		var sumY = 0;
+		for (let i = 0; i < data.length; i++) {
+			sumX += (i + 1);
+			sumY += data[i].Value;
+		}
+		var e = sumY;
+		var f = slope * sumX;
+		return ((e - f) / (data.length));
+	};
 	dh.draw = function () {		
 		var output = "";
         var bob = dh.set.yStep;
