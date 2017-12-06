@@ -26,7 +26,13 @@ var dataHussar = function (element, dataset, settings = {})
 		"labelXOffset" : settings.labelXOffset ? settings.labelXOffset : -15,
 		"labelYOffset" : settings.labelYOffset ? settings.labelYOffset : 10,
 		"labelXColour" : settings.labelXColour ? settings.labelXColour : "black",
-		"labelYColour" : settings.labelYColour ? settings.labelYColour : "black"
+		"trendLine" : settings.trendLine ? settings.trendLine : false,
+		"trendLineColour" : settings.trendLineColour ? settings.trendLineColour : "red"
+		"trendLineFunction" : settings.trendLineFunction ? settings.trendLineFunction : true,
+		"trendLineTextXOffset" : settings.trendLineTextXOffset ? settings.trendLineTextXOffset : 15,
+		"trendLineTextYOffset" : settings.trendLineTextYOffset ? settings.trendLineTextYOffset : 15,
+		"trendLineTextColour" : settings.trendLineTextColour ? settings.trendLineTextColour : "red"
+
 	};
 	dh.init = function() {
 		document.getElementsByTagName("head")[0].innerHTML += "<style> @-webkit-keyframes " + dh.elem.id + "-dash { to { stroke-dashoffset: 0; } } @keyframes " + dh.elem.id + "-dash { to { stroke-dashoffset: 0; } </style>";
