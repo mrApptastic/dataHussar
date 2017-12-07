@@ -25,13 +25,15 @@ var dataHussar = function (element, dataset, settings = {})
 		"labelYSize" : settings.labelYSize ? settings.labelYSize : "initial",
 		"labelXOffset" : settings.labelXOffset ? settings.labelXOffset : -15,
 		"labelYOffset" : settings.labelYOffset ? settings.labelYOffset : 10,
-		"labelXColour" : settings.labelXColour ? settings.labelXColour : "black",
+		"labelXColour" : settings.labelXColour ? settings.labelXColour : "black"
+		/*,
 		"trendLine" : settings.trendLine ? settings.trendLine : false,
 		"trendLineColour" : settings.trendLineColour ? settings.trendLineColour : "red"
 		"trendLineFunction" : settings.trendLineFunction ? settings.trendLineFunction : true,
 		"trendLineTextXOffset" : settings.trendLineTextXOffset ? settings.trendLineTextXOffset : 15,
 		"trendLineTextYOffset" : settings.trendLineTextYOffset ? settings.trendLineTextYOffset : 15,
 		"trendLineTextColour" : settings.trendLineTextColour ? settings.trendLineTextColour : "red"
+		*/
 
 	};
 	dh.init = function() {
@@ -81,6 +83,31 @@ var dataHussar = function (element, dataset, settings = {})
 	};
 	dh.draw = function () {		
 		var output = "";
+		/*
+		if (1 == 1) {
+			let slope = dh.slp(dh.data);
+			let yInt = dh.yin(dh.data, slope);
+			let x1 = 0; //(ib * step);
+			let y1 = (dh.set.height - dh.data[ib].Value * (dh.set.height / maxValue));
+			let x2 = ((dh.data.length) * step);
+			let y2 = (dh.set.height - dh.data[ib + 1].Value * (dh.set.height / maxValue));
+					   output += '<path class="' 
+							  + this.elem.id 
+							  + '_graphLine" d="M ' 
+							  + x1 
+							  + ' ' 
+							  + y1 
+							  + ' l ' 
+							  + (x2 - x1) 
+							  + ' ' 
+							  + (y2 - y1) 
+							  + '" stroke="' 
+							  + dh.set.colour
+							  +'" stroke-width="' 
+							  + dh.set.stroke 
+							  + '" fill="none" />'
+		}
+		*/
         var bob = dh.set.yStep;
 		var maxValue = Math.max.apply(Math,dh.data.map(function(o){return o.Value;})); // dh.max();
 		var step = dh.set.width / dh.data.length;
