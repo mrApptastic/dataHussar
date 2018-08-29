@@ -25,15 +25,13 @@ var dataHussar = function (element, dataset, settings = {})
 		"labelYSize" : settings.labelYSize ? settings.labelYSize : "initial",
 		"labelXOffset" : settings.labelXOffset ? settings.labelXOffset : -15,
 		"labelYOffset" : settings.labelYOffset ? settings.labelYOffset : 10,
-		"labelXColour" : settings.labelXColour ? settings.labelXColour : "black"
-		/*,
+		"labelXColour" : settings.labelXColour ? settings.labelXColour : "black",
 		"trendLine" : settings.trendLine ? settings.trendLine : false,
-		"trendLineColour" : settings.trendLineColour ? settings.trendLineColour : "red"
+		"trendLineColour" : settings.trendLineColour ? settings.trendLineColour : "red",
 		"trendLineFunction" : settings.trendLineFunction ? settings.trendLineFunction : true,
 		"trendLineTextXOffset" : settings.trendLineTextXOffset ? settings.trendLineTextXOffset : 15,
 		"trendLineTextYOffset" : settings.trendLineTextYOffset ? settings.trendLineTextYOffset : 15,
 		"trendLineTextColour" : settings.trendLineTextColour ? settings.trendLineTextColour : "red"
-		*/
 
 	};
 	dh.init = function() {
@@ -110,6 +108,8 @@ var dataHussar = function (element, dataset, settings = {})
 		*/
         var bob = dh.set.yStep;
 		var maxValue = Math.max.apply(Math,dh.data.map(function(o){return o.Value;})); // dh.max();
+		/* Add 1/5 space to the top */
+		maxValue = maxValue * 1.20;
 		var step = dh.set.width / dh.data.length;
 		var dv = Math.ceil(dh.data.length / dh.set.xStep);
 		var divider = dh.data.length > dh.set.xStep ? dv : 1;
