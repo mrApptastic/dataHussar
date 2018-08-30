@@ -81,7 +81,8 @@ var dataHussar = function (element, dataset, settings = {})
 	};
 	dh.draw = function () {		
 		var output = "";
-		/*
+	/*
+
 		if (1 == 1) {
 			let slope = dh.slp(dh.data);
 			let yInt = dh.yin(dh.data, slope);
@@ -89,19 +90,14 @@ var dataHussar = function (element, dataset, settings = {})
 			let y1 = (dh.set.height - dh.data[ib].Value * (dh.set.height / maxValue));
 			let x2 = ((dh.data.length) * step);
 			let y2 = (dh.set.height - dh.data[ib + 1].Value * (dh.set.height / maxValue));
+			let x1 = 0 //0; //(ib * step);
+			let y1 = (slope * 0) + yInt //(dh.set.height - dh.data[0].Value * (dh.set.height / maxValue));
+			let x2 = (dh.data.length -1); //((dh.data.length) * step);
+			let y2 = (slope * dh.data.length -1) + yInt //(dh.set.height - dh.data[dh.data.length -1].Value * (dh.set.height / maxValue));
 					   output += '<path class="' 
 							  + this.elem.id 
 							  + '_graphLine" d="M ' 
-							  + x1 
-							  + ' ' 
-							  + y1 
-							  + ' l ' 
-							  + (x2 - x1) 
-							  + ' ' 
-							  + (y2 - y1) 
-							  + '" stroke="' 
-							  + dh.set.colour
-							  +'" stroke-width="' 
+@@ -105,11 +107,9 @@ var dataHussar = function (element, dataset, settings = {})
 							  + dh.set.stroke 
 							  + '" fill="none" />'
 		}
