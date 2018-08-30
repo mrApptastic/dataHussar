@@ -109,7 +109,7 @@ var dataHussar = function (element, dataset, settings = {})
         var bob = dh.set.yStep;
 		var maxValue = Math.max.apply(Math,dh.data.map(function(o){return o.Value;})); // dh.max();
 		/* Add 1/5 space to the top */
-		maxValue = maxValue * 1.20;
+		maxValue = maxValue * 1.1;
 		var step = dh.set.width / dh.data.length;
 		var dv = Math.ceil(dh.data.length / dh.set.xStep);
 		var divider = dh.data.length > dh.set.xStep ? dv : 1;
@@ -189,6 +189,25 @@ var dataHussar = function (element, dataset, settings = {})
 								  + '" r="5" stroke="' 
 								  + dh.set.dotColour 
 								  + '" stroke-width="1" fill="white" />';
+								  /*
+							output += '<text style="opacity:0;transition: 0.5s;z-index:2;" x="'
+								  + (ib * step + dh.set.valueOffsetX)
+								  +'" y="'
+								  + (dh.set.height - dh.data[ib].Value * (dh.set.height / maxValue) - dh.set.valueOffsetY)
+								  +'" stroke="'
+								  + 'lime'  
+ 								  +'" stroke-width="'
+								  + '0.5em'  
+								  +'" class="' 
+								  + dh.elem.id 
+								  + '_TextLbl" font-family="' 
+								  + dh.set.valueFont 
+								  + '" font-size="' 
+								  + dh.set.valueSize 
+								  + '">'
+								  + dh.data[ib].Value 
+								  +'</text>';
+								  */
 						   output += '<text style="opacity:0;transition: 0.5s;z-index:1;" x="'
 								  + (ib * step + dh.set.valueOffsetX)
 								  +'" y="'
@@ -221,17 +240,20 @@ var dataHussar = function (element, dataset, settings = {})
 	};
 	dh.anit = function () {
 		var points = document.getElementsByClassName(this.elem.id + "_Point");
+		// var textbgs = document.getElementsByClassName(this.elem.id + "_TextLbl");
 		var texts = document.getElementsByClassName(this.elem.id + "_Text");
 		var at = "data-" + dh.elem.id.toLowerCase() + "-index";
 		for (var y = 0; y < points.length; y++) {
 			points[y].addEventListener("mouseover", function(event) {
 				var index = this.getAttribute(at);
 				this.style.strokeWidth = 10;
+				// textbgs[index].style.opacity = 1;
 				texts[index].style.opacity = 1;
 			});
 			points[y].addEventListener("mouseout", function(event) {
 				var index = this.getAttribute(at);
 				this.style.strokeWidth = 1;
+				// textbgs[index].style.opacity = 0;
 				texts[index].style.opacity = 0;
 			});
 		}	
